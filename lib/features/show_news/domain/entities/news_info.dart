@@ -3,14 +3,14 @@ class NewsInfo {
   final String? author;
   final String? imageUrl;
   final String? content;
-  final String dateTime;
+  final DateTime? dateTime;
 
-  NewsInfo({
+  const NewsInfo({
     this.title,
     this.author,
     this.imageUrl,
     this.content,
-    required this.dateTime,
+    this.dateTime,
   });
 }
 
