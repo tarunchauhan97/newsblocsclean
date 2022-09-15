@@ -14,12 +14,13 @@ class NewsCubit extends Cubit<NewsState> {
   final FetchNewsUseCase _fetchNewsUseCase = sl<FetchNewsUseCase>();
 
   void fetchNews(String? searchText) async {
+    // emit(NewsError());
     emit(NewsLoading());
     final Either<Failure, List<NewsInfo>> fetchNewsResult =
         await _fetchNewsUseCase.fetchNews(searchText);
     fetchNewsResult.fold(
       (l) => emit(NewsError()),
-      (news) => emit(NewsInitial(news: news)),
+      (news) => searchText!=null ? emit(NewsInitialSearch(news: news)) :emit(NewsInitial(news: news)),
     );
   }
 }

@@ -41,6 +41,13 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              onSubmitted: (searchText) {
+                if (searchText.trim() == '') {
+                  context.read<NewsCubit>().fetchNews(null);
+                } else {
+                  context.read<NewsCubit>().fetchNews(searchText);
+                }
+              },
               cursorColor: Palette.deepBlue,
               style: TextStyle(
                 color: Palette.deepBlue,
@@ -66,13 +73,30 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(height: 16),
-            Text(
-              "Top News",
-              style: TextStyle(
-                color: Palette.deepBlue,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            BlocBuilder<NewsCubit, NewsState>(
+              builder: (context, state) {
+                if (state is NewsInitial) {
+                  return Text(
+                    "Top News",
+                    style: TextStyle(
+                      color: Palette.deepBlue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                } else if (state is NewsInitialSearch) {
+                  return Text(
+                    "Searched News",
+                    style: TextStyle(
+                      color: Palette.deepBlue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                } else {
+                  return SizedBox();
+                }
+              },
             ),
             SizedBox(height: 16),
             Expanded(
@@ -83,10 +107,22 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (_, index) {
                         return NewsCard(newsInfo: state.news[index]);
                       });
+                } else if (state is NewsInitialSearch) {
+                  return ListView.builder(
+                      itemCount: state.news.length,
+                      itemBuilder: (_, index) {
+                        return NewsCard(newsInfo: state.news[index]);
+                      });
                 } else if (state is NewsLoading)
                   return const Center(child: CircularProgressIndicator());
                 else {
-                  return const Center(child: Text("tatat"));
+                  // return const Center(child: Text("tatat"));
+                  return Center(child: IconButton(
+                    onPressed: (){
+                      context.read<NewsCubit>().fetchNews(null);
+                    },
+                    icon: Icon(Icons.refresh),
+                  ),);
                 }
               }),
             ),
