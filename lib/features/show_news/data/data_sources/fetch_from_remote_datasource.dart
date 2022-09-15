@@ -1,20 +1,29 @@
+import 'package:newsblocsclean/core/constants/strings.dart';
 import 'package:newsblocsclean/core/failures_successes/exceptions.dart';
 import 'package:newsblocsclean/core/services/api_service.dart';
 import 'package:newsblocsclean/features/show_news/data/models/news_info_model.dart';
+import 'package:newsblocsclean/service_locator.dart';
 
 abstract class FetchFromRemoteDataResource {
   Future<List<NewsInfoModel>> fetchNews(String? searchText);
 }
 
 class FetchFromRemoteDataResourceImpl implements FetchFromRemoteDataResource {
-  final ApiService apiService;
+  final ApiService apiService = sl<ApiService>();
 
-  const FetchFromRemoteDataResourceImpl({required this.apiService});
+  // final ApiService apiService;
+  //
+  // const FetchFromRemoteDataResourceImpl({required this.apiService});
 
   @override
   Future<List<NewsInfoModel>> fetchNews(String? searchText) async {
     try {
-      Map<String, dynamic> mapDataResponse = await apiService.getData();
+      Map<String, dynamic> mapDataResponse = await apiService
+          .getData(searchText != null ? Strings.apiEverything : Strings.apiTopHeadlines, {
+        'apiKey': Strings.apiKey,
+        if (searchText == null) 'country': 'in',
+        if (searchText != null) 'q': searchText,
+      });
       List list = mapDataResponse['articles'];
       List<Map<String, dynamic>> mapList = [];
       for (int i = 0; i < list.length; i++) {
@@ -28,7 +37,7 @@ class FetchFromRemoteDataResourceImpl implements FetchFromRemoteDataResource {
         news.add(newsInfoModel);
       }
       return news;
-    } catch(e) {
+    } catch (e) {
       throw FetchException(message: 'failed to get data');
     }
   }
