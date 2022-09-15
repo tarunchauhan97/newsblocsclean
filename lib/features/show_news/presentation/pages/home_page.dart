@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:newsblocsclean/core/constants/palette.dart';
-import 'package:newsblocsclean/features/show_news/presentation/component/news_card.dart';
+import 'package:newsblocsclean/features/show_news/presentation/news_cubit/news_cubit.dart';
+import 'package:newsblocsclean/features/show_news/presentation/pages/component/news_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<NewsCubit>().fetchNews(null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +76,27 @@ class HomePage extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Expanded(
-              child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (_, index) {
-                    return NewsCard();
-                  }),
+              child: BlocBuilder<NewsCubit, NewsState>(builder: (_, state) {
+                if (state is NewsInitial) {
+                  return ListView.builder(
+                      itemCount: state.news.length,
+                      itemBuilder: (_, index) {
+                        return NewsCard(newsInfo: state.news[index]);
+                      });
+                } else if (state is NewsLoading)
+                  return const Center(child: CircularProgressIndicator());
+                else {
+                  return const Center(child: Text("tatat"));
+                }
+              }),
             ),
+            // Expanded(
+            //   child: ListView.builder(
+            //       itemCount: 10,
+            //       itemBuilder: (_, index) {
+            //         return NewsCard();
+            //       }),
+            // ),
             // NewsCard(),
           ],
         ),

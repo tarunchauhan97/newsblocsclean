@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsblocsclean/core/constants/palette.dart';
+import 'package:newsblocsclean/features/show_news/presentation/news_cubit/news_cubit.dart';
 import 'package:newsblocsclean/service_locator.dart';
-import 'package:newsblocsclean/text_cubit/text_cubit.dart';
-import 'package:newsblocsclean/text_page.dart';
-
 import 'features/show_news/presentation/pages/home_page.dart';
 
 void main() {
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => TextCubit(),
+            create: (_) => NewsCubit(),
           ),
         ],
         child: MaterialApp(
@@ -33,7 +31,7 @@ class MyApp extends StatelessWidget {
                 secondary: Palette.deepBlue,
               ),
               fontFamily: 'Poppins'),
-          home: const TextPage(),
+          home: const HomePage(),
         ));
   }
 }

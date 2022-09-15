@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:newsblocsclean/core/constants/palette.dart';
+import 'package:newsblocsclean/features/show_news/domain/entities/news_info.dart';
 import 'package:newsblocsclean/features/show_news/presentation/pages/news_view_page.dart';
 
 class NewsCard extends StatelessWidget {
-  const NewsCard({Key? key}) : super(key: key);
+  final NewsInfo newsInfo;
+
+  const NewsCard({Key? key, required this.newsInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +14,7 @@ class NewsCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => NewsViewPage(),
+            builder: (_) => NewsViewPage(newsInfo: newsInfo),
           ),
         );
       },
@@ -24,10 +27,13 @@ class NewsCard extends StatelessWidget {
             Container(
               height: 260,
               color: Palette.lightGrey,
-              child: Image.network(
-                "https://images-prod.healthline.com/hlcmsresource/images/AN_images/health-benefits-of-apples-1296x728-feature.jpg",
-                fit: BoxFit.cover,
-              ),
+              child: newsInfo.imageUrl != null
+                  ? Image.network(
+                      newsInfo.imageUrl!,
+                      // "https://images-prod.healthline.com/hlcmsresource/images/AN_images/health-benefits-of-apples-1296x728-feature.jpg",
+                      fit: BoxFit.cover,
+                    )
+                  : const SizedBox(),
             ),
             Positioned(
               left: 16,
@@ -45,10 +51,10 @@ class NewsCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.all(16),
                   child: Text(
-                    "News Title",
+                    newsInfo.title != null ? newsInfo.title! : "No title",
                     maxLines: 2,
                     style: TextStyle(
                       color: Colors.deepPurple,
