@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newsblocsclean/core/constants/palette.dart';
+import 'package:newsblocsclean/features/login_screen/bloc/auth_bloc.dart';
 import 'package:newsblocsclean/features/show_news/presentation/news_cubit/news_cubit.dart';
 import 'package:newsblocsclean/features/show_news/presentation/pages/component/news_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,6 +34,15 @@ class _HomePageState extends State<HomePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+                context.read<AuthBloc>().add(SignOutRequested());
+
+            },
+            icon: Icon(Icons.logout,color: Colors.black),
+          )
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -117,12 +127,14 @@ class _HomePageState extends State<HomePage> {
                   return const Center(child: CircularProgressIndicator());
                 else {
                   // return const Center(child: Text("tatat"));
-                  return Center(child: IconButton(
-                    onPressed: (){
-                      context.read<NewsCubit>().fetchNews(null);
-                    },
-                    icon: Icon(Icons.refresh),
-                  ),);
+                  return Center(
+                    child: IconButton(
+                      onPressed: () {
+                        context.read<NewsCubit>().fetchNews(null);
+                      },
+                      icon: Icon(Icons.refresh),
+                    ),
+                  );
                 }
               }),
             ),

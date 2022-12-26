@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "135529272004",
+    "project_id": "newsblocsclean",
+    "storage_bucket": "newsblocsclean.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135529272004:android:7f635b5477b62ada84af91",
+        "android_client_info": {
+          "package_name": "com.example.newsblocsclean"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "135529272004-uqaje06g57hquqav4jf5fhav0lg02a40.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.newsblocsclean",
+            "certificate_hash": "6d6d0c87382e0ac540774e0853c8822950af32a8"
+          }
+        },
+        {
+          "client_id": "135529272004-hujdt07rb6on6oopfjjjf6pjc63copl0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1jWMsYpqdkO1KmLgv8w-_ELh-3bbR3rY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "135529272004-hujdt07rb6on6oopfjjjf6pjc63copl0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
